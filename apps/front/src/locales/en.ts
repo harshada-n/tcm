@@ -38,6 +38,12 @@ export default {
         delete: "Delete",
       },
     },
+    transaction: {
+      list: {
+        title: "Transactions",
+        identity: "Identify the place"
+      },
+    },
     layout: {
       appHeader: {
         welcome: "Welcome {username}",
@@ -47,6 +53,7 @@ export default {
           users: "Users",
           page1: "page1",
           page2: "page2",
+          transactions: "Transactions",
           validation: "validation",
           quit: "Quit",
         },

@@ -37,6 +37,12 @@ export default {
         delete: "Supprimer",
       },
     },
+    transaction: {
+      list: {
+        title: "Transactions",
+        identity: "Identifier le lieu",
+      },
+    },
     layout: {
       appHeader: {
         welcome: "Bienvenue {username}",
@@ -44,6 +50,7 @@ export default {
       menu: {
         appMenu: {
           users: "Utilisateurs",
+          transactions: "Transactions",
           page1: "page1",
           page2: "page2",
           validation: "validation",
