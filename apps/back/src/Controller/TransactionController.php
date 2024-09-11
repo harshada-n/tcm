@@ -29,7 +29,7 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/transactions', name: 'list_transactions', methods: ['GET'])]
-    #[ThisRouteDoesntNeedAVoter]
+    #[IsGranted(TransactionVoter::VIEW_ANY_TRANSACTION)]
     public function listTransactions(\Symfony\Bundle\SecurityBundle\Security $security): JsonResponse
     {
         $transactions = $this->transactionRepository->findForUser(2);
@@ -38,6 +38,7 @@ class TransactionController extends AbstractController
     }
 
     #[Route('/transactions/{id}', name: 'update_transaction', methods: ['PUT'])]
+    #[IsGranted(TransactionVoter::EDIT_ANY_TRANSACTION)]
     public function updateTransaction(Transaction $transaction, #[MapRequestPayload]
     UpdateTransactionDto $transactionDto,): JsonResponse
     {
