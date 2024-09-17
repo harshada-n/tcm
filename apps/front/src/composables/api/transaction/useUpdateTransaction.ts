@@ -1,5 +1,5 @@
 import { PUT } from "~/constants/http";
-import type { Transaction, TransactionId } from "~/types/Transaction";
+import type { Transaction, TransactionId } from "~/types/TransactionInput";
 import useBasicError from "~/composables/useBasicError";
 
 type TransactionInput = Omit<Transaction, "id"> & {

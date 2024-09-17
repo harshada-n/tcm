@@ -1,11 +1,14 @@
 <template>
   <div>
-    <div v-show="error">{{ error }}}</div>
-    {{ errorDelete }}
+    
     <table>
       <thead>
         <tr>
-          <th>{{ $t("components.transaction.list.title") }}</th>
+          <th>{{ $t("components.transaction.list.transactionDate") }}</th>
+          <th>{{ $t("components.transaction.list.amount") }}</th>
+          <th>{{ $t("components.transaction.list.paymentLabel") }}</th>
+          <th>{{ $t("components.transaction.list.localization") }}</th>
+          <th>{{ $t("components.transaction.list.actions") }}</th>
         </tr>
       </thead>
       <tbody>
@@ -14,34 +17,31 @@
           <td>{{ transaction.amount }}</td>
           <td>{{ transaction.payment_label }}</td>
           <td>{{ transaction.localization }}</td>
-          <td>
-            <NuxtLink
-              v-if="!authStore.isAuthUser(transaction)"
-              :to="`/transactions/${transaction.id}`"
-            >
-              <Button @click="isOpen = true"  severity="secondary">{{
+          <td v-if="transaction.localization"></td>              
+          <td v-else>
+            <Button @click="setData(transaction.id)"  severity="secondary">{{
                 $t("components.transaction.list.identity")
               }}</Button>
-            </NuxtLink>
           </td>
         </tr>
       </tbody>
     </table>
-    <UModal v-model="isOpen">
-      <div class="p-4">
-        <Placeholder class="h-48" />
-      </div>
-    </UModal>
+<div v-show="isOpen">{{locations}}</div>
+   
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Transaction } from "~/types/Transaction";
+import type { TransactionInput } from "~/types/TransactionInput";
 import useAuthUser from "~/store/auth";
 import useListtransactions from "~/composables/api/transaction/useListtransactions";
+import useListLocations from "~/composables/api/transaction/useListLocations";
 
 const authStore = useAuthUser();
-const isOpen = ref(false);
+const isOpen = false;
+const location_selected = null;
+const transaction_selected = null;
+const { updateTransaction } = useListtransactions();
 
 const {
   data: transactions,
@@ -49,6 +49,22 @@ const {
   pending: transactionsPending,
   refresh: transactionsRefresh,
 } = await useListtransactions();
+
+const locations = useListLocations();
+
+function setData(id) {
+  this.isOpen = !isOpen;
+  this.transaction_selected = id;
+}
+
+const submit = async (state: TransactionInput) => {
+  try {
+    await updateTransaction(transaction_selected, state);
+    await navigateTo("/transactions");
+  } catch (e) {
+    logger.info(e);
+  }
+};
 </script>
 
 <style scoped lang="scss"></style>

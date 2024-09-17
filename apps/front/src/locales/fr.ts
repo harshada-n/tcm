@@ -41,7 +41,16 @@ export default {
       list: {
         title: "Transactions",
         identity: "Identifier le lieu",
+        save: "Save",
+        transactionDate: "Transaction Date",
+        amount: "amount",
+        paymentLabel: "Payment Label",
+        localization: "Localization",
+        actions: "Actions"
       },
+      updateForm: {
+        title: "Update",
+      }
     },
     layout: {
       appHeader: {
