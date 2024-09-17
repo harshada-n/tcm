@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
+use App\Entity\Transaction;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -16,16 +16,56 @@ class TransactionFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user = new Transaction();
-        $user->setTransactionDate('2024-09-11 03:26:29');
-        $user->setUserId(2);
-        $user->setLatitude('48.8498° N');
-        $user->setLongitude('2.3550° E');
-        $user->setAmount(250.00);
-        $user->setPaymentLabel('TD10JPVNW0');
-        $user->setLocalization('La Tour d\'Argent');
+        $transaction = new Transaction();
+        $transaction->setTransactionDate(new \DateTime());
+        $transaction->setUserId('test-user');
+        $transaction->setLatitude('48.857399');
+        $transaction->setLongitude('2.359078');
+        $transaction->setAmount(250.00);
+        $transaction->setPaymentLabel('TD10JPVNW0');
+        $transaction->setLocalization('L\'As du Fallafel');
+        $manager->persist($transaction);
 
-        $manager->persist($user);
+        $transaction = new Transaction();
+        $transaction->setTransactionDate(new \DateTime());
+        $transaction->setUserId('test-user');
+        $transaction->setLatitude('48.854179');
+        $transaction->setLongitude('2.332503');
+        $transaction->setAmount(250.00);
+        $transaction->setPaymentLabel('LKXIDVNK5Q');
+        $transaction->setLocalization('');
+        $manager->persist($transaction);
+
+        $transaction = new Transaction();
+        $transaction->setTransactionDate(new \DateTime());
+        $transaction->setUserId('test-user');
+        $transaction->setLatitude('48.866089');
+        $transaction->setLongitude('2.304284');
+        $transaction->setAmount(200.00);
+        $transaction->setPaymentLabel('DBBM8MSUEM');
+        $transaction->setLocalization('');
+        $manager->persist($transaction);
+
+        $transaction = new Transaction();
+        $transaction->setTransactionDate(new \DateTime());
+        $transaction->setUserId('test-user');
+        $transaction->setLatitude('48.871265');
+        $transaction->setLongitude('2.362855');
+        $transaction->setAmount(250.00);
+        $transaction->setPaymentLabel('UL0YJN4IXP');
+        $transaction->setLocalization('');
+        $manager->persist($transaction);
+
+        $transaction = new Transaction();
+        $transaction->setTransactionDate(new \DateTime());
+        $transaction->setUserId('test-user');
+        $transaction->setLatitude('48.832310');
+        $transaction->setLongitude('2.372647');
+        $transaction->setAmount(150.00);
+        $transaction->setPaymentLabel('VL23B19KS2');
+        $transaction->setLocalization('');
+        $manager->persist($transaction);
+
         $manager->flush();
     }
 }

@@ -20,6 +20,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TransactionController extends AbstractController
 {
+    /**
+     * @var Security
+     */
+    private $security;
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly TransactionRepository $transactionRepository,
@@ -30,9 +35,10 @@ class TransactionController extends AbstractController
 
     #[Route('/transactions', name: 'list_transactions', methods: ['GET'])]
     #[IsGranted(TransactionVoter::VIEW_ANY_TRANSACTION)]
-    public function listTransactions(\Symfony\Bundle\SecurityBundle\Security $security): JsonResponse
+    public function listTransactions(): JsonResponse
     {
-        $transactions = $this->transactionRepository->findForUser(2);
+        $user = $this->getUser();
+        $transactions = $this->transactionRepository->findForUser($user->getId());
 
         return new JsonResponse($transactions);
     }

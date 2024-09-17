@@ -24,12 +24,13 @@ class TransactionRepository extends ServiceEntityRepository
    /**
     * @return Transaction[] Returns an array of Transaction objects
     */
-   public function findForUser(int $user_id): array
+   public function findForUser(string $user_id): array
    {
        return $this->createQueryBuilder('t')
-           ->select('t.id, t.transaction_date', 't.payment_label', 't.amount', 't.localization', 't.latitude', 't.longitude')
-           ->where('t.user_id = 2')
+           ->select('t.id', 't.transaction_date', 't.payment_label', 't.amount', 't.localization', 't.latitude', 't.longitude')
+           ->where('t.user_id = :user_id')
            ->orderBy('t.id', 'ASC')
+           ->setParameter('user_id', $user_id)
            ->setMaxResults(10)
            ->getQuery()
            ->getArrayResult()

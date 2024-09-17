@@ -27,7 +27,7 @@ class Transaction
     private ?string $longitude = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
-    private ?string $amount = null;
+    private ?float $amount = null;
 
     #[ORM\Column(length: 20)]
     private ?string $payment_label = null;
@@ -41,6 +41,12 @@ class Transaction
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    } 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,7 +54,8 @@ class Transaction
 
     public function getTransactionDate(): ?\DateTimeInterface
     {
-        return $this->transaction_date;
+        return DateTime::createFromImmutable($this->transaction_date);
+        // return $this->transaction_date;
     }
 
     public function setTransactionDate(\DateTimeInterface $transaction_date): static
@@ -94,12 +101,12 @@ class Transaction
         return $this;
     }
 
-    public function getAmount(): ?string
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(string $amount): static
+    public function setAmount(float $amount): static
     {
         $this->amount = $amount;
 
@@ -137,7 +144,7 @@ class Transaction
 
     public function setCreatedAt(): static
     {
-        $this->created_at = new \DateTimeImmutable();
+        $this->created_at = new \DateTime();
 
         return $this;
     }
@@ -149,7 +156,7 @@ class Transaction
 
     public function setUpdatedAt(): static
     {
-        $this->updated_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTime();
 
         return $this;
     }
