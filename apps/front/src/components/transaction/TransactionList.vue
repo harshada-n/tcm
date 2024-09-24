@@ -26,45 +26,71 @@
         </tr>
       </tbody>
     </table>
-<div v-show="isOpen">{{locations}}</div>
-   
+    <Dialog :visible="visible" modal header="Select Location" :style="{ width: '25rem' }" :closable="false">
+      <form @submit.prevent.stop="submit">
+        <div class="flex items-center gap-4 mb-4" v-for="location in locations" :key="location">
+            <input 
+            v-model="localization"
+            id="{{key}}"
+            :value="location"
+            type="radio"/>
+            <label>{{location}}</label>
+        </div>
+        <slot name="buttons" :is-valid="isValid">
+            <Button
+              type="button"
+              severity="danger"
+              class="mr-2 mb-2"
+              @click="visible = false"
+            >
+              {{ $t("components.user.form.buttonCancel") }}
+            </Button>
+            <Button type="submit" :disabled="!isValid" class="mr-2 mb-2">
+              {{ $t("components.user.form.ok") }}
+            </Button>
+          </slot>
+      </form>
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { TransactionInput } from "~/types/TransactionInput";
-import useAuthUser from "~/store/auth";
 import useListtransactions from "~/composables/api/transaction/useListtransactions";
 import useListLocations from "~/composables/api/transaction/useListLocations";
+import useUpdateTransaction from "~/composables/api/transaction/useUpdateTransaction";
 
-const authStore = useAuthUser();
-const isOpen = false;
-const location_selected = null;
-const transaction_selected = null;
-const { updateTransaction } = useListtransactions();
+const visible = ref(false);
+const transactionId = ref(null);
+const localization = ref(null);
+const locations = useListLocations();
+const { violations, updateTransaction: updateTransactionApi } = useUpdateTransaction();
 
+
+
+const isValid = localization ? true : false;
 const {
   data: transactions,
-  error,
-  pending: transactionsPending,
   refresh: transactionsRefresh,
+  error,
 } = await useListtransactions();
 
-const locations = useListLocations();
-
 function setData(id) {
-  this.isOpen = !isOpen;
-  this.transaction_selected = id;
+  transactionId.value = id;
+  visible.value = true;
 }
 
-const submit = async (state: TransactionInput) => {
+const submit = async (TransactionInput) => {
   try {
-    await updateTransaction(transaction_selected, state);
-    await navigateTo("/transactions");
+    await updateTransactionApi({ id: transactionId.value, localization: localization.value });
+    transactionsRefresh();
+    visible.value = false;
   } catch (e) {
     logger.info(e);
   }
 };
+
 </script>
 
 <style scoped lang="scss"></style>

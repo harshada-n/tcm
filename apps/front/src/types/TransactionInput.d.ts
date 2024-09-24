@@ -1,13 +1,5 @@
-import { DateTimeFormat } from "~~/node_modules/@intlify/core-base/dist/core-base";
-
 export type TransactionId = string;
-export interface Transaction {
-  // payment_label: string;
-  // transaction_date: DateTimeFormat;
-  id:integer;
+export interface TransactionInput {
+  id:TransactionId;
   localization: string;
-  // longitude: string;
-  // latitude: string;
-  // user_id: BigInteger;
-  // amount: string;
 }

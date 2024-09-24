@@ -3,6 +3,7 @@
   <TransactionForm
     :default-value="data"
     :violations="violations"
+    :transaction_selected="transaction_selected"
     @submit="submit"
     @cancel="navigateToList"
   >
@@ -13,9 +14,10 @@
 <script setup lang="ts">
 import useUpdateTransaction from "~/composables/api/transaction/useUpdateTransaction";
 import type { TransactionInput } from "~/types/TransactionInput";
+import TransactionForm from "~/components/transaction/TransactionForm";
 
 interface Props {
-  TransactionId: string;
+  transaction_selected: integer;
 }
 
 const props = defineProps<Props>();
@@ -25,7 +27,7 @@ const { violations, updateTransaction: updateTransactionApi } = useUpdateTransac
 const submit = async (value: TransactionInput) => {
   // If you need to copy the value, create a clone so it does not track reactivity
   //data.value = {...data.value, ...value};
-  await updateTransactionApi(props.transactionId, value);
+  await updateTransactionApi(props.transaction_selected, value);
   return navigateTo("/transactions/");
 };
 const navigateToList = () => {

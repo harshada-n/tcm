@@ -17,8 +17,8 @@ class Transaction
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $transaction_date = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
+    #[ORM\Column(length: 20)]
+    private ?string $user_id = null;
 
     #[ORM\Column(length: 20)]
     private ?string $latitude = null;
@@ -70,7 +70,7 @@ class Transaction
         return $this->user_id;
     }
 
-    public function setUserId(int $user_id): static
+    public function setUserId(string $user_id): static
     {
         $this->user_id = $user_id;
 

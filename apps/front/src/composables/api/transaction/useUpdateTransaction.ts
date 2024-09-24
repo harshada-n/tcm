@@ -1,5 +1,5 @@
 import { PUT } from "~/constants/http";
-import type { Transaction, TransactionId } from "~/types/TransactionInput";
+import type { Transaction } from "~/types/TransactionInput";
 import useBasicError from "~/composables/useBasicError";
 
 type TransactionInput = Omit<Transaction, "id"> & {
@@ -11,10 +11,10 @@ export default function useUpdateTransaction() {
   return {
     errorMessage,
     violations,
-    async updateTransaction(transactionId: TransactionId, transaction: TransactionInput) {
+    async updateTransaction(transaction: TransactionInput) {
       try {
         resetError();
-        const response = await $appFetch<Transaction>("/transactions/" + transactionId, {
+        const response = await $appFetch<Transaction>("/transactions/" + transaction.id, {
           method: PUT,
           body: transaction,
         });

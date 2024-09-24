@@ -1,4 +1,5 @@
 <template>
+<Dialog v-model:visible="visible" modal header="Select Location" :style="{ width: '25rem' }">
   <div class="grid">
     <div class="col-12">
       <form @submit.prevent.stop="submit">
@@ -33,18 +34,16 @@
       </form>
     </div>
   </div>
+  </Dialog>
 </template>
 <script setup lang="ts">
-import type { Transaction } from "~/types/Transaction";
+import { Transaction } from "~/types/Transaction";
+import useListLocations from "~/composables/api/transaction/useListLocations";
+import defaultVue from "../../layouts/default.vue";
 
 interface State extends Omit<Transaction, "id"> {}
 interface Props {
   defaultValue?: State;
-  violations?: {
-    [K in keyof State]?: string;
-  } & {
-    password?: string;
-  };
 }
 const props = withDefaults(defineProps<Props>(), {
   defaultValue() {
@@ -58,9 +57,10 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const state = reactive({ ...props.defaultValue });
 const localization = ref("");
+const locations = useListLocations();
+const results = locations.filter(object => Object.values(object).some(i => i.includes(defaultValue)));
 
-const isPasswordEmpty = computed(() => !localization.value);
-const isValid = isPasswordEmpty;
+const isValid = localization.value ? true : false;
 
 interface EventEmitter {
   (

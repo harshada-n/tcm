@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UpdateTransactionDto
 {
     #[Assert\NotBlank]
-    #[Assert\Length(min:10, max: 255)]
+    #[Assert\Length(min:3, max: 200)]
     public string $localization;
 
     public function getLocalization(): string
